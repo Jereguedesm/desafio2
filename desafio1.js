@@ -31,22 +31,24 @@ class ProductManager {
     }
 
     deleteProduct(id) {
-        const prod = this.products.find((prod) => prod.id === id)
+        const index = this.products.findIndex((prod) => prod.id === id);
 
-        if (prod) {
-            console.log("Producto eliminado")
+        if (index !== -1) {
+            this.products.splice(index, 1);
+            console.log("Producto eliminado");
         } else {
-            console.log("Producto no encontrado")
+            console.log("Producto no encontrado");
         }
     }
 
-    updateProduct(id) {
-        const prod = this.products.find((prod) => prod.id === id)
+    updateProduct(id, updatedFields) {
+        const prod = this.products.find((prod) => prod.id === id);
 
         if (prod) {
-            console.log(prod)
+            Object.assign(prod, updatedFields);
+            console.log("Producto actualizado:", prod);
         } else {
-            console.log("Producto no encontrado")
+            console.log("Producto no encontrado");
         }
     }
 }

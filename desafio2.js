@@ -3,64 +3,64 @@ const path = "./products.json"
 
 class ProductManager {
     constructor() {
-        this.products = [];
+        this.products = []
     }
 
     async addProduct(product) {
-        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-        const prod = this.products.find((prod) => prod.code === product.code);
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"))
+        const prod = this.products.find((prod) => prod.code === product.code)
 
         if (prod) {
-            console.log("Producto ya existente");
+            console.log("Producto ya existente")
         } else if (!product.title || !product.description || !product.price || !product.code || !product.stock || !product.thumbnail) {
-            throw new Error("Todos los campos obligatorios deben ser proporcionados.");
+            throw new Error("Todos los campos obligatorios deben ser proporcionados.")
         } else {
-            this.products.push(product);
-            await fs.writeFile(path, JSON.stringify(prods));
+            this.products.push(product)
+            await fs.writeFile(path, JSON.stringify(prods))
         }  
     }
 
     async getProducts() {
-        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-        console.log(prods);
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"))
+        console.log(prods)
     }
 
     async getProductsById(id) {
-        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-        const producto = prods.find(prod => prod.id === id);
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"))
+        const producto = prods.find(prod => prod.id === id)
 
         if (producto){
-            console.log(producto);
+            console.log(producto)
         } else {
-            console.log("Producto no encontrado");
+            console.log("Producto no encontrado")
         }
     }
 
     async deleteProduct(id) {
-        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-        const product = prods.find(prod => prod.id === id);
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"))
+        const product = prods.find(prod => prod.id === id)
 
         if (product){
-            await fs.writeFile(path, JSON.stringify(prods.filter(prod => prod.id !== id)));
-            console.log("Producto eliminado");
+            await fs.writeFile(path, JSON.stringify(prods.filter(prod => prod.id !== id)))
+            console.log("Producto eliminado")
         } else {
-            console.log("Producto no encontrado");
+            console.log("Producto no encontrado")
         }
     }
 
     async updateProducts(id, producto) {
-        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-        const index = prods.findIndex(prod => prod.id === id);
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"))
+        const index = prods.findIndex(prod => prod.id === id)
 
         if (index !== -1){
-            prods[index].nombre = producto.nombre;
-            prods[index].descripcion = producto.descripcion;
-            prods[index].categoria = producto.categoria;
-            prods[index].stock = producto.stock;
-            await fs.writeFile(path, JSON.stringify(prods));
-            console.log("Producto actualizado:", prods[index]);
+            prods[index].nombre = producto.nombre
+            prods[index].descripcion = producto.descripcion
+            prods[index].categoria = producto.categoria
+            prods[index].stock = producto.stock
+            await fs.writeFile(path, JSON.stringify(prods))
+            console.log("Producto actualizado:", prods[index])
         } else {
-            console.log("Producto no encontrado");
+            console.log("Producto no encontrado")
         }
     }
 }

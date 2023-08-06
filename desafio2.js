@@ -7,14 +7,8 @@ class ProductManager {
     }
 
     async readProductsFromFile() {
-        try {
-            const prodsData = await fs.readFile(path, "utf-8")
-            return JSON.parse(prodsData)
-        } catch (error) {
-            // Si ocurre algún error al leer el archivo, podrías retornar un valor por defecto o lanzar una excepción.
-            // Aquí simplemente retornamos un array vacío para iniciar.
-            return []
-        }
+        const prodsData = await fs.readFile(path, "utf-8")
+        return JSON.parse(prodsData)
     }
 
     async writeProductsToFile() {

@@ -1,4 +1,4 @@
-import {promises as fs} from "fs"
+/*import {promises as fs} from "fs"
 
 
 
@@ -61,69 +61,78 @@ const deleteProduct = async (id) => {
         console.log("Producto no encontrado")
     }
 }
+*/
 
 
 
 
+import {promises as fs} from "fs"
+const path = "./products.json"
 
-/*class ProductManager {
+class ProductManager {
     constructor() {
-        this.products = []
+        this.products = [];
     }
 
-    addProduct(product) {
-        const prod = this.products.find((prod) => prod.code === product.code)
-    
+    async addProduct(product) {
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
+        const prod = this.products.find((prod) => prod.code === product.code);
+
         if (prod) {
-            console.log("Producto ya encontrado")
+            console.log("Producto ya existente");
         } else if (!product.title || !product.description || !product.price || !product.code || !product.stock || !product.thumbnail) {
-            throw new Error("Todos los campos obligatorios deben ser proporcionados.")
+            throw new Error("Todos los campos obligatorios deben ser proporcionados.");
         } else {
-            this.products.push(product)
+            this.products.push(product);
+            await fs.writeFile(path, JSON.stringify(prods));
         }  
     }
-    
 
-    getProducts() {
-        console.log(this.products)
+    async getProducts() {
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
+        console.log(prods);
     }
-    const getProducts = async () => {
-    const prods = JSON.parse(await fs.readFile(path, "utf-8"))
-    console.log(prods)
-}
 
-    getProductById(id) {
-        const prod = this.products.find((prod) => prod.id === id)
+    async getProductsById(id) {
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
+        const producto = prods.find(prod => prod.id === id);
 
-        if (prod) {
-            console.log(prod)
+        if (producto){
+            console.log(producto);
         } else {
-            console.log("Producto no encontrado")
+            console.log("Producto no encontrado");
         }
     }
 
-    deleteProduct(id) {
-        const index = this.products.findIndex((prod) => prod.id === id);
+    async deleteProduct(id) {
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
+        const product = prods.find(prod => prod.id === id);
 
-        if (index !== -1) {
-            this.products.splice(index, 1);
+        if (product){
+            await fs.writeFile(path, JSON.stringify(prods.filter(prod => prod.id !== id)));
             console.log("Producto eliminado");
         } else {
             console.log("Producto no encontrado");
         }
     }
 
-    updateProduct(id, updatedFields) {
-        const prod = this.products.find((prod) => prod.id === id);
+    async updateProducts(id, producto) {
+        const prods = JSON.parse(await fs.readFile(path, "utf-8"));
+        const index = prods.findIndex(prod => prod.id === id);
 
-        if (prod) {
-            Object.assign(prod, updatedFields);
-            console.log("Producto actualizado:", prod);
+        if (index !== -1){
+            prods[index].nombre = producto.nombre;
+            prods[index].descripcion = producto.descripcion;
+            prods[index].categoria = producto.categoria;
+            prods[index].stock = producto.stock;
+            await fs.writeFile(path, JSON.stringify(prods));
+            console.log("Producto actualizado:", prods[index]);
         } else {
             console.log("Producto no encontrado");
         }
     }
 }
+
 
 class Product {
     constructor(title, description, price, code, stock, thumbnail) {
@@ -147,7 +156,7 @@ class Product {
         }
         /*if (typeof thumbnail !== "string") {
             throw new Error("La URL de la imagen (thumbnail) debe ser una cadena de texto.")
-        }*/ /*
+        }*/ 
 
         this.title = title
         this.description = description
@@ -181,4 +190,4 @@ productManager.addProduct(pera)
 
 productManager.getProducts()
 
-productManager.getProductById(4)*/
+productManager.getProductById(4)
